@@ -1628,8 +1628,10 @@ static int ax25_recvmsg(struct socket *sock, struct msghdr *msg, size_t size,
 	}
 
 	/* Now we can treat all alike */
+	release_sock(sk);
 	skb = skb_recv_datagram(sk, flags & ~MSG_DONTWAIT,
 				flags & MSG_DONTWAIT, &err);
+	lock_sock(sk);
 	if (skb == NULL)
 		goto out;
 
